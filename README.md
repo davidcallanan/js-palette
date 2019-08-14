@@ -4,9 +4,10 @@ A simple JavaScript theme and style management library
 
 ## Installation
 
-Install from the npm repository via [npm](https://docs.npmjs.com/cli/npm): `npm i themio`
+Install from the npm repository:
 
-Install from the npm repository via [yarn](https://yarnpkg.com/): `yarn add themio`
+ - via [npm](https://docs.npmjs.com/cli/npm) -  `npm i themio`
+ - via [yarn](https://yarnpkg.com/) - `yarn add themio`
 
 ## Usage
 
@@ -16,59 +17,57 @@ Import this library:
 import * as Themio from 'themio';
 ```
 
-Define colors using [HSL](http://en.citizendium.org/wiki/HSL_and_HSV) format:
+Define some colors:
 
 ```js
-const WHITE = {
-  "strong"  : Themio.createColor(0.000, 0.000, 1.000),
-  "regular" : Themio.createColor(0.000, 0.000, 0.950),
-  "weak"    : Themio.createColor(0.000, 0.000, 0.900),
+const WHITE_ON_ANY = {
+  "strong"  : "#fff",
+  "regular" : "#eee",
+  "weak"    : "#ddd",
 }
 
-const WHITE_CONTENT = WHITE;
-
-const BLACK = {
-  "strong"  : Themio.createColor(0.000, 0.000, 0.100),
-  "regular" : Themio.createColor(0.000, 0.000, 0.050),
-  "weak"    : Themio.createColor(0.000, 0.000, 0.000),
-
+const BLACK_ON_WHITE = {
+  "strong"  : "#000",
+  "regular" : "#111",
+  "weak"    : "#222",
 }
 
-const BLACK_CONTENT = {
-  "strong"  : BLACK["weaker"],
-  "regular" : BLACK["regular"],
-  "weak"    : BLACK["stronger"],
+const BLACK_ON_BLACK = {
+  "strong"  : "#222",
+  "regular" : "#111",
+  "weak"    : "#000",
 }
 
-const PURPLE = {
-  "strong"  : Themio.createColor(0.754, 0.878, 0.405),
-  "regular" : Themio.createColor(0.754, 0.878, 0.355),
-  "weak"    : Themio.createColor(0.754, 0.878, 0.305),
+const PURPLE_ON_ANY = {
+  "strong"  : "#550A99,
+  "regular" : "#5E0BAA",
+  "weak"    : "#6E23B3",
 }
 ```
 
 Define styles:
 
 ```js
-const styles = (theme) => {
+const generateStyles = (theme) => {
   "primary": {
-    colorVariants: PURPLE,
-    contentColorVariants: WHITE,
+    colorVariants        : PURPLE_ON_ANY,
+    contentColorVariants : WHITE_ON_ANY,
     nestableStyles: ["secondary"],
   },
   "secondary": {
-    colorVariants: theme == "dark" ? BLACK : WHITE
-    contentColorVariants: theme == "dark" ? BLACK_CONTENT : WHITE_CONTENT,
+    colorVariants        : theme == "dark" ? BLACK_ON_BLACK : WHITE_ON_ANY,
+    contentColorVariants : theme == "dark" ? WHITE_ON_ANY   : BLACK_ON_WHITE,
     nestableStyles: ["primary"],
   }
 }
 ```
 
-Create root scope and start rendering!
+Create root layer and start rendering!
 
 ```js
 const theme = decideOnSomeTheme(["light", "dark"]);
-const rootThemioScope = Themio.createScope(styles(theme), "secondary");
+const styles = generateStyles(theme);
+const rootThemioLayer = Themio.createLayer(styles, "secondary");
 renderApp(rootThemioScope);
 ```
 
@@ -77,12 +76,19 @@ Dummy render function:
 ```js
 function renderApp(themioScope, depth=3)
 {
+  // Use the content color for direct content with no further layers
+  // You may pass in a variant to mix things up a bit
   renderHeading(themioScope.getContentColor());
   renderDescription(themioScope.getContentColor("weak"));
-  renderCallToActionButton(themioScope.createChildScope());
-  renderSecondaryButton(themioScope.createChildScope("variant", ["default", "strong"]));
   
+  // Create a child layer when you need a new layer
+  // Passing in no arguments should choose a style that stands out
+  // You may also pass in a prefered style, which may be a variant of the current style
+  renderCallToActionButton(themioScope.createChildLayer());
+  renderSecondaryButton(themioScope.createChildLayer("variant", ["default", "strong"]));
+  
+  // The power of layers allows the same components to stand out in any context
   if (depth <= 0) return;
-  renderApp(themioScope.createChildScope(), depth - 1);
+  renderApp(themioScope.createChildLayer(), depth - 1);
 }
 ```
