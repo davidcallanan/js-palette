@@ -39,7 +39,7 @@ const BLACK_ON_BLACK = {
 }
 
 const PURPLE_ON_ANY = {
-  "strong"  : "#550A99,
+  "strong"  : "#550A99",
   "regular" : "#5E0BAA",
   "weak"    : "#6E23B3",
 }
