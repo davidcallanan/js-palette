@@ -40,7 +40,7 @@ const PURPLE = {
   "weak"    : "#6E23B3",
 }
 
-// You may add additional color variants such as `error`, `warning` and `success`
+// You may add additional color variants, for example for errors or warnings
 ```
 
 Define some styles (you should have at least two for contrast):
