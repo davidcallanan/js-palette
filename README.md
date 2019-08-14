@@ -111,7 +111,7 @@ Methods:
 
 `Styles` is an interface of:
 
- - . <pre>[styleName: [StyleName](#stylename)]: [Style](#style)</pre>
+ - <code>[styleName: [StyleName](#stylename)]: [Style](#style)</code>
 
 Typically, your application will have at least two styles for constrast: primary and secondary.
 
@@ -123,8 +123,8 @@ Typically, your application will have at least two styles for constrast: primary
 
 `Style` is an interface of:
 
- - . <pre>colorVariants: [ColorVariants](#colorvariants)</pre>
- - . <pre>contentColorVariants: [ColorVariants](#colorvariants)</pre>
+ - <code>colorVariants: [ColorVariants](#colorvariants)</code>
+ - <code>contentColorVariants: [ColorVariants](#colorvariants)</code>
  - `childrenStyles: string[]`
  
 `colorVariants` specifies one or more variants of the color that an element with this style should have.
