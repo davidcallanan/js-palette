@@ -1,4 +1,4 @@
-# js-themio
+# JS Themio
 
 **Version**: 1.0.0-dev
 
@@ -6,7 +6,7 @@ A simple JavaScript theme and style management library
 
 ## Installation
 
-Install from the npm repository:
+Install from the [npm repository](https://www.npmjs.com/):
 
  - via [npm](https://docs.npmjs.com/cli/npm) -  `npm i themio`
  - via [yarn](https://yarnpkg.com/) - `yarn add themio`
