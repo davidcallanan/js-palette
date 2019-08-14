@@ -149,19 +149,21 @@ TODO: error, warning and success should really be styles rather than variants, a
 
 Signature: <pre>createLayer(styles: [Styles](#styles), preferredStyle: string|string[]): [Layer](#layer)</pre>
 
-Creates a new layer with a preferred style.
+Creates and returns a new layer with a preferred style.
 
 #### `Layer.getColor`
 
-Sigature: `getColor(): any`
+Sigature: `getColor(preferredVariant?: string|string[]): any`
 
-Gets a color suitable for rendering the current layer.
+Returns a color suitable for rendering the current layer.
+
+You may pass in a preferred variant to add variation, although this may be overridden if the layer already has a preferred variant.
 
 #### `Layer.getContentColor`
 
 Signature: `getContentColor(preferredVariant?: string|string[]): any`
 
-Gets a color suitable for rendering direct content of the current layer.
+Returns a color suitable for rendering direct content of the current layer.
 
 You may pass in a preferred variant to add variation.
 
@@ -169,7 +171,7 @@ You may pass in a preferred variant to add variation.
 
 Signature: <pre>createChildLayer(preferredStyle?: "variant"|string|string[], preferredVariant?: string|string[]): [Layer](#layer)</pre>
 
-Creates a new layer in order to create a style separation.
+Creates and returns a new layer in order to create a style separation.
 
 By default, this will choose the first element of the [`nestableStyles`](#style) field of the layer.
 
