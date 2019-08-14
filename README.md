@@ -50,12 +50,12 @@ const generateStyles = (theme) => ({
   "primary": {
     colorVariants        : PURPLE,
     contentColorVariants : WHITE,
-    nestableStyles: ["secondary"],
+    childrenStyles: ["secondary"],
   },
   "secondary": {
     colorVariants        : theme == "dark" ? BLACK : WHITE,
     contentColorVariants : theme == "dark" ? WHITE : BLACK,
-    nestableStyles: ["primary"],
+    childrenStyles: ["primary"],
   }
 })
 ```
@@ -111,9 +111,13 @@ Methods:
 
 `Styles` is an interface of:
 
- - . <pre>[styleName: string]: [Style](#style)</pre>
+ - . <pre>[styleName: [StyleName](#stylename)]: [Style](#style)</pre>
 
 Typically, your application will have at least two styles for constrast: primary and secondary.
+
+#### `StyleName`
+
+`StyleName` is an alias for `string|symbol`.
 
 #### `Style`
 
@@ -121,39 +125,67 @@ Typically, your application will have at least two styles for constrast: primary
 
  - . <pre>colorVariants: [ColorVariants](#colorvariants)</pre>
  - . <pre>contentColorVariants: [ColorVariants](#colorvariants)</pre>
- - `nestableStyles: string[]`
+ - `childrenStyles: string[]`
  
-`colorVariants` specifies one or more variants of the color that an element with this style should be.
+`colorVariants` specifies one or more variants of the color that an element with this style should have.
 
 `contentColorVariants` specifies one or more variants of the content color that an element with this style should have.
 
-`nestableStyles` specifies one or more styles that can be used in a child layer of a layer with this style.
+`childrenStyles` specifies one or more styles that can be used in a child layer of a layer with this style.
 
 #### `ColorVariants`
 
 `ColorVariants` is an interface of:
 
- - `[variantName: string]: any`
+ - `[variantName: [ColorVariantName](#colorvariantname)]: any`
  
 Color variants can be useful when you need to distinguish between elements with the same style. For example, you may alternate between a lighter and darker variant for the background color, or you may use a darker variant for the color of a horizontal separation line.
 
 They also allow you to use different colors in different contexts, for example if there is an error.
 
-Example variants: default, strong, weak, error, warning, success.
+Example variants: `default`, `strong`, `weak`, `error;default`, `error;strong`, `error;weak`, `warning;default`, `warning;strong`, `warning;weak`, `success;default`, `success;strong` and `success;weak`.
 
-TODO: error, warning and success should really be styles rather than variants, as they themselves need variants... Does this mean we need nested styles? (not nestable styles which I might need to rename)
+#### `ColorVariantName`
+
+`ColorVariantName` is an alias for `string|symbol`
+
+Each variant name is split into one or more segments separated by semi-colons (`;`). All functions which look for a preferred variant will match segments rather than entire names.
+
+#### `PreferredStyle`
+
+`PreferredStyle` is an alias for `(string|symbol)|(string|symbol)[]`.
+
+If not an array, the preferred style will be considered the value.
+
+If an array, each element in the array will be considered a preferred style, with priority given from left to right.
+
+#### `PreferredVariant`
+
+`PreferredVariant` is an alias for `(string|symbol)|(string|symbol)[]`.
+
+If not an array, the preferred variant will be considered the value.
+
+If an array, each element in the array will be considered a preferred variant, with priority given from left to right.
+
+Each preferred variant is split into segments separated by semi-colons (`;`) and each segment must be matched.
+
+Matches for the same variant and style of the parent layer will fail unless there are no other alternatives. 
+
+If no variant is specified or if no variant is found, a variant will be automaically chosen to best fit the context.
 
 ### Functions
 
 #### `createLayer`
 
-Signature: <pre>createLayer(styles: [Styles](#styles), preferredStyle: string|string[]): [Layer](#layer)</pre>
+Signature: <pre>createLayer(styles: [Styles](#styles), preferredStyle: [PreferredStyle](#preferredstyle), preferredVariant?: [PreferredVariant](#preferredvariant)): [Layer](#layer)</pre>
 
 Creates and returns a new layer with a preferred style.
 
+If a preferred style cannot be found, there will be undefined behaviour.
+
 #### `Layer.getColor`
 
-Sigature: `getColor(preferredVariant?: string|string[]): any`
+Sigature: `getColor(preferredVariant?: [PreferredVariant](#preferredvariant)): any`
 
 Returns a color suitable for rendering the current layer.
 
@@ -161,7 +193,7 @@ You may pass in a preferred variant to add variation, although this may be overr
 
 #### `Layer.getContentColor`
 
-Signature: `getContentColor(preferredVariant?: string|string[]): any`
+Signature: <pre>getContentColor(preferredVariant?: [PreferredVariant](#preferredvariant)): any</pre>
 
 Returns a color suitable for rendering direct content of the current layer.
 
@@ -169,12 +201,12 @@ You may pass in a preferred variant to add variation.
 
 #### `Layer.createChildLayer`
 
-Signature: <pre>createChildLayer(preferredStyle?: "variant"|string|string[], preferredVariant?: string|string[]): [Layer](#layer)</pre>
+Signature: <pre>createChildLayer(preferredStyle?: "variant"|[PreferredStyle](#preferredstyle), preferredVariant?: [PreferredVariant](#preferredvariant)): [Layer](#layer)</pre>
 
 Creates and returns a new layer in order to create a style separation.
 
-By default, this will choose the first element of the [`nestableStyles`](#style) field of the layer.
+You may pass in a preferred style to add variation. The `"variant"` style can be used to use a variat of the current layer style, which shouldn't have as high contrast.
 
-However, you may pass in a preferred style to add variation. The `"variant"` style can be used to create a variant of the current layer style.
+If no preferred style is specified or a preferred style cannot be found, the first style of the available children styles or `"variant"` will be chosen.
 
 You may pass in a preferred variant of the preferred style to add more variation.
