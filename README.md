@@ -1,5 +1,7 @@
 # js-themio
 
+**Version**: 1.0.0-dev
+
 A simple JavaScript theme and style management library
 
 ## Installation
