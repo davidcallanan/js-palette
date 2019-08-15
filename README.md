@@ -1,22 +1,22 @@
-# JS Themio
+# JS Palette
 
 **Version**: 1.0.0-dev
 
-A simple JavaScript theme and style management library.
+A simple JavaScript color palette management library.
 
 ## Installation
 
 Install from the [npm repository](https://www.npmjs.com/):
 
- - via [npm](https://docs.npmjs.com/cli/npm) -  `npm i themio`
- - via [yarn](https://yarnpkg.com/) - `yarn add themio`
+ - via [npm](https://docs.npmjs.com/cli/npm) -  `npm i palette`
+ - via [yarn](https://yarnpkg.com/) - `yarn add palette`
 
 ## Usage
 
 Import this library:
 
 ```js
-import * as Themio from 'themio';
+import * as Palette from 'palette';
 ```
 
 Define some colors and variants:
@@ -46,7 +46,7 @@ const PURPLE = {
 Define some styles (you should have at least two for contrast):
 
 ```js
-const generateStyles = (theme) => ({
+const generatePalette = (theme) => ({
   "primary": {
     colorVariants        : PURPLE,
     contentColorVariants : WHITE,
@@ -64,32 +64,32 @@ Create root layer and start rendering!
 
 ```js
 const theme = decideOnSomeTheme(["light", "dark"]);
-const styles = generateStyles(theme);
-const rootThemioLayer = Themio.createLayer(styles, "secondary");
-renderApp(rootThemioLayer);
+const palette = generatePalette(theme);
+const rootPaletteLayer = Palette.createLayer(palette, "secondary");
+renderApp(rootPaletteLayer);
 ```
 
 Dummy render function:
 
 ```js
-function renderApp(themioLayer, depth=3)
+function renderApp(paletteLayer, depth=3)
 {
   // Use the color for the element you are rendering
-  renderBackground(themioLayer.getColor());
+  renderBackground(paletteLayer.getColor());
 
   // Use the content color for direct content that won't have any further layers
   // You may pass in a variant to mix things up a bit
-  renderHeading(themioLayer.getContentColor());
-  renderDescription(themioLayer.getContentColor("weak"));
+  renderHeading(paletteLayer.getContentColor());
+  renderDescription(paletteLayer.getContentColor("weak"));
   
   // Create a child layer when you need a style separation
   // The arguments allow you to configure whether you want the element to stand out or not
-  renderCallToActionButton(themioLayer.createChildLayer());
-  renderSecondaryButton(themioLayer.createChildLayer("variant", ["default", "strong"]));
+  renderCallToActionButton(paletteLayer.createChildLayer());
+  renderSecondaryButton(paletteLayer.createChildLayer("variant", ["default", "strong"]));
   
   // The power of layers allows the same components to stand out in any context
   if (depth <= 0) return;
-  renderApp(themioLayer.createChildLayer(), depth - 1);
+  renderApp(paletteLayer.createChildLayer(), depth - 1);
 }
 ```
 
@@ -99,7 +99,7 @@ function renderApp(themioLayer, depth=3)
 
 #### `Layer`
 
-Use [`createLayer`](#createlayer) to create a new layer from [styles](#styles).
+Use [`createLayer`](#createlayer) to create a new layer from a [Palette](#palette).
 
 Methods:
 
@@ -107,9 +107,9 @@ Methods:
  - [`getContentColor`](#layergetcontentcolor)
  - [`createChildLayer`](#layercreatechildlayer)
  
-#### `Styles`
+#### `Palette`
 
-`Styles` is an interface of:
+`Palette` is an interface of:
 
  - <code>[styleName: [StyleName](#stylename)]: [Style](#style)</code>
 
@@ -125,7 +125,7 @@ Typically, your application will have at least two styles for constrast: primary
 
  - <code>colorVariants: [ColorVariants](#colorvariants)</code>
  - <code>contentColorVariants: [ColorVariants](#colorvariants)</code>
- - `childrenStyles: string[]`
+ - `children: string[]`
  
 `colorVariants` specifies one or more variants of the color that an element with this style should have.
 
@@ -171,13 +171,13 @@ Each preferred variant is split into segments separated by semi-colons (`;`) and
 
 Matches for the same variant and style of the parent layer will fail unless there are no other alternatives. 
 
-If no variant is specified or if no variant is found, a variant will be automaically chosen to best fit the context.
+If no variant is specified or if no variant is found, the `default` variant will be chosen.
 
 ### Functions
 
 #### `createLayer`
 
-Signature: <pre>createLayer(styles: [Styles](#styles), preferredStyle: [PreferredStyle](#preferredstyle), preferredVariant?: [PreferredVariant](#preferredvariant)): [Layer](#layer)</pre>
+Signature: <pre>createLayer(palette: [Palette](#palette), preferredStyle: [PreferredStyle](#preferredstyle), preferredVariant?: [PreferredVariant](#preferredvariant)): [Layer](#layer)</pre>
 
 Creates and returns a new layer with a preferred style.
 
