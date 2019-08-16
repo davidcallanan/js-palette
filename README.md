@@ -147,9 +147,7 @@ They also allow you to use different colors in different contexts, for example i
 
 #### `ColorVariantName`
 
-`ColorVariantName` is an alias for `string|symbol`
-
-Each variant name is split into one or more segments separated by semi-colons (`;`). All functions which look for a preferred variant will match segments rather than entire names.
+`ColorVariantName` is an alias for `string|symbol`.
 
 Example variant names: `default`, `strong`, `weak`, `error;default`, `error;strong`, `error;weak`, `warning;default`, `warning;strong`, `warning;weak`, `success;default`, `success;strong` and `success;weak`.
 
@@ -222,8 +220,6 @@ The behaviour if no style is matched is defined where the matching occurs.
 #### Preferred variant matching
 
 Each element in the preferred variant array will be considered a preferred variant, with priority given from left to right.
-
-Each preferred variant is split into segments separated by semi-colons (`;`) and each segment must be matched for the entire variant to be matched.
 
 Matches for the same variant and style of the parent layer will fail.
 
