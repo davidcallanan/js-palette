@@ -149,7 +149,7 @@ They also allow you to use different colors in different contexts, for example i
 
 `ColorVariantName` is an alias for `string|symbol`.
 
-Example variant names: `default`, `strong`, `weak`, `error;default`, `error;strong`, `error;weak`, `warning;default`, `warning;strong`, `warning;weak`, `success;default`, `success;strong` and `success;weak`.
+Example variant names: `default`, `strong`, `weak`, `error`, `error;strong`, `error;weak`, `warning`, `warning;strong`, `warning;weak`, `success`, `success;strong` and `success;weak`.
 
 #### `PreferredStyles`
 
@@ -223,4 +223,4 @@ Each element in the preferred variant array will be considered a preferred varia
 
 Matches for the same variant and style of the parent layer will fail.
 
-If no variant is found, the `default` variant will be chosen if exists (even if this results in the same style and variant of the parent layer), else there will be undefined behaviour.
+If no variant is found, the `default` variant will be chosen, even if this results in the same style and variant as the parent layer.
