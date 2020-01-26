@@ -16,25 +16,25 @@ Install from the [npm registry](https://www.npmjs.com/):
 Import this library:
 
 ```js
-import * as Palette from 'palette';
+import * as palette from 'palette';
 ```
 
 Define some colors and variants:
 
 ```js
-const WHITE = {
+const WHITE_VARIANTS = {
   "strong"  : "#fff",
   "regular" : "#eee",
   "weak"    : "#ddd",
 }
 
-const BLACK = {
+const BLACK_VARIANTS = {
   "strong"  : "#000",
   "regular" : "#111",
   "weak"    : "#222",
 }
 
-const PURPLE = {
+const PURPLE_VARIANTS = {
   "strong"  : "#550A99",
   "regular" : "#5E0BAA",
   "weak"    : "#6E23B3",
@@ -46,16 +46,16 @@ const PURPLE = {
 Define some styles (you should have at least two for contrast):
 
 ```js
-const generatePalette = (theme) => ({
+const generateStyles = (theme) => ({
   "primary": {
-    colorVariants        : PURPLE,
-    contentColorVariants : WHITE,
-    childrenStyles: ["secondary"],
+    colors        : PURPLE_VARIANTS,
+    contentColors : WHITE_VARIANTS,
+    nestableStyles: ["secondary"],
   },
   "secondary": {
-    colorVariants        : theme == "dark" ? BLACK : WHITE,
-    contentColorVariants : theme == "dark" ? WHITE : BLACK,
-    childrenStyles: ["primary"],
+    colors        : theme == "dark" ? BLACK_VARIANTS : WHITE_VARIANTS,
+    contentColors : theme == "dark" ? WHITE_VARIANTS : BLACK_VARIANTS,
+    nestableStyles: ["primary"],
   }
 })
 ```
@@ -64,32 +64,32 @@ Create root layer and start rendering!
 
 ```js
 const theme = decideOnSomeTheme(["light", "dark"]);
-const palette = generatePalette(theme);
-const rootPaletteLayer = Palette.Layer.create(palette, "secondary");
-renderApp(rootPaletteLayer);
+const styles = generateStyles(theme);
+const baseStyle = palette.style(styles, "secondary");
+renderApp(baseStyle);
 ```
 
 Dummy render function:
 
 ```js
-function renderApp(paletteLayer, depth=3)
+function renderApp(style, depth=3)
 {
   // Use the color for the element you are rendering
-  renderBackground(paletteLayer.getColor());
+  renderBackground(style.color());
 
   // Use the content color for direct content that won't have any further layers
   // You may pass in a variant to mix things up a bit
-  renderHeading(paletteLayer.getContentColor());
-  renderDescription(paletteLayer.getContentColor("weak"));
+  renderHeading(style.contentColor());
+  renderDescription(style.contentColor("weak"));
   
   // Create a child layer when you need a style separation
   // The arguments allow you to configure whether you want the element to stand out or not
-  renderCallToActionButton(paletteLayer.createChildLayer());
-  renderSecondaryButton(paletteLayer.createChildLayer("variant", ["default", "strong"]));
+  renderCallToActionButton(style.layer());
+  renderSecondaryButton(style.variant(["default", "strong"]));
   
   // The power of layers allows the same components to stand out in any context
   if (depth <= 0) return;
-  renderApp(paletteLayer.createChildLayer(), depth - 1);
+  renderApp(style.layer(), depth - 1);
 }
 ```
 
