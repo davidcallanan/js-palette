@@ -1,28 +1,28 @@
-/**
- * A method for identifying things
- * */
 type Id = string | symbol;
-
-/**
- * Hints identifying things
- * */
-type Hint = (Id | Id[]);
+type Hint = Id | Id[];
 
 namespace Context
 {
-	export interface Variants
-	{
-		default: any;
-		[variantName: string]: any;
-	}
+	/** 
+	 * Your application should have at least two styles for constrast, primary and secondary.
+	 */
 
 	export interface Styles
 	{
 		[styleName: string]: {
-			colors: Variants;
-			contentColors: Variants;
+			colors: Styles.Variants;
+			contentColors: Styles.Variants;
 			contrastingStyles: Id[];
 		};
+	}
+
+	namespace Styles
+	{
+		export interface Variants
+		{
+			default: any;
+			[variantName: string]: any;
+		}
 	}
 }
 

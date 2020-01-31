@@ -99,31 +99,16 @@ function renderApp(style, depth=3)
 
 ## Documentation
 
-API below will be moved to seperate documentation soon.
-
-## API
+Soon.
 
 ### Types
 
-#### `Layer`
-
-Static methods:
-
- - [`create`](#layercreate)
-
-Methods:
-
- - [`getColor`](#layerprototypegetcolor)
- - [`getContentColor`](#layerprototypegetcontentcolor)
- - [`createChildLayer`](#layerprototypecreatechildlayer)
- 
 #### `Palette`
 
 `Palette` is an interface of:
 
  - <code>[styleName: [StyleName](#stylename)]: [Style](#style)</code>
 
-Typically, your application will have at least two styles for constrast: primary and secondary.
 
 #### `StyleName`
 

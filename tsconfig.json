@@ -8,6 +8,11 @@
   "include": ["./src/**/*"],
   "jsdocOptions": {
     "mode": "modules",
-    "out": "docs"
+    "out": "docs",
+    "toc": [
+      "rootStyle",
+      "Style",
+      "Context"
+    ]
   }
 }
