@@ -1,9 +1,7 @@
 /node_modules/
+/src/
 /docs/
-/build/
 /yarn.lock
 /yarn-debug.log
 /yarn-error.log
-
-TEMP:
-src_old
+/DEVELOPMENT.md

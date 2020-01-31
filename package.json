@@ -1,0 +1,17 @@
+{
+  "name": "palette",
+  "version": "0.1.0",
+  "main": "build/index.js",
+  "repository": "https://github.com/davidcallanan/js-palette",
+  "author": "David P. Callanan",
+  "license": "MIT",
+  "scripts": {
+    "build": "tsc",
+    "build:watch": "tsc --watch",
+    "doc": "typedoc src/index.ts --excludeNotExported --excludePrivate --name \"Palette.js\" --includeVersion"
+  },
+  "devDependencies": {
+    "typedoc": "^0.16.9",
+    "typescript": "^3.7.5"
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "sourceMap": true,
+    "outDir": "./build",
+    "rootDir": "./src",
+  },
+  "include": ["./src/**/*"],
+  "jsdocOptions": {
+    "mode": "modules",
+    "out": "docs"
+  }
+}

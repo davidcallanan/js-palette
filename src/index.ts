@@ -1,20 +1,27 @@
+/**
+ * A method for identifying things
+ * */
 type Id = string | symbol;
-type Hint = (Id | []Id)?;
+
+/**
+ * Hints identifying things
+ * */
+type Hint = (Id | Id[]);
 
 namespace Context
 {
-	interface Variants
+	export interface Variants
 	{
 		default: any;
-		[variantName: Id]: any;
+		[variantName: string]: any;
 	}
 
-	interface Styles
+	export interface Styles
 	{
-		[styleName: Id]: {
+		[styleName: string]: {
 			colors: Variants;
 			contentColors: Variants;
-			contrastingStyles: []Id;
+			contrastingStyles: Id[];
 		};
 	}
 }
@@ -24,13 +31,13 @@ abstract class Style
 	/**
 	 * Return the color associated with this style.
 	 */
-	abstract color();
+	abstract color(): any;
 
 	/**
 	 * Return a content color associated with this style.
 	 * @param variantHint Specify a hint of which content color variant to use.
 	 */
-	abstract contentColor(variantHint?: Hint);
+	abstract contentColor(variantHint?: Hint): any;
 	
 	/**
 	 * Return a new style that contrasts to this style.
@@ -53,10 +60,27 @@ abstract class Style
  */
 function rootStyle(stylesContext: Context.Styles, rootStyleHint: Hint): Style
 {
+	return new InternalStyle();
+}
 
+class InternalStyle extends Style
+{
+	color(): any {}
+	contentColor(variantHint?: Hint): any {}
+	contrast(styleHint?: Hint): Style
+	{
+		return new InternalStyle();
+	}
+	variant(variantHint?: Hint): Style
+	{
+		return new InternalStyle();
+	}
 }
 
 export {
 	rootStyle,
 	Style,
+	Id,
+	Hint,
+	Context
 };

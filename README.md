@@ -1,8 +1,12 @@
-# JS Palette
+# Palette.js
 
-**Version**: 1.0.0-dev
+**Version**: 0.1.0-dev
 
 A simple JavaScript color palette management library.
+
+## Dependencies
+
+ - [Node](https://nodejs.org) `^10.16.3` - Note that other versions of node may still be compatible. Other environments may be compatible too.
 
 ## Installation
 
@@ -240,3 +244,11 @@ Each element in the preferred variant array will be considered a preferred varia
 Matches for the same variant and style of the parent layer will fail.
 
 If no variant is found, the `default` variant will be chosen, even if this results in the same style and variant as the parent layer.
+
+## Development
+
+See `DEVELOPMENT.md` file.
+
+## License
+
+See `LICENSE` file.
