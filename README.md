@@ -50,12 +50,12 @@ const generateStyles = (theme) => ({
   "primary": {
     colors        : PURPLE_VARIANTS,
     contentColors : WHITE_VARIANTS,
-    nestableStyles: ["secondary"],
+    contrastingStyles: ["secondary"],
   },
   "secondary": {
     colors        : theme == "dark" ? BLACK_VARIANTS : WHITE_VARIANTS,
     contentColors : theme == "dark" ? WHITE_VARIANTS : BLACK_VARIANTS,
-    nestableStyles: ["primary"],
+    contrastingStyles: ["primary"],
   }
 })
 ```
@@ -65,8 +65,8 @@ Create root layer and start rendering!
 ```js
 const theme = decideOnSomeTheme(["light", "dark"]);
 const styles = generateStyles(theme);
-const baseStyle = palette.style(styles, "secondary");
-renderApp(baseStyle);
+const style = palette.rootStyle(styles, "secondary");
+renderApp(style);
 ```
 
 Dummy render function:
@@ -84,12 +84,12 @@ function renderApp(style, depth=3)
   
   // Create a child layer when you need a style separation
   // The arguments allow you to configure whether you want the element to stand out or not
-  renderCallToActionButton(style.layer());
+  renderCallToActionButton(style.contrast());
   renderSecondaryButton(style.variant(["default", "strong"]));
   
   // The power of layers allows the same components to stand out in any context
   if (depth <= 0) return;
-  renderApp(style.layer(), depth - 1);
+  renderApp(style.contrast(), depth - 1);
 }
 ```
 
@@ -168,6 +168,18 @@ If `null` or `undefined`, acts as an empty array.
 If not an array, acts as an array with one element.
 
 ### Functions
+
+#### `rootStyle`
+
+Signature: <code>rootStyle([styleName](#stylename), [styles](#styles))</code>
+
+Create and return a root style populated with `styles` prototype. Style is determined from `styleName`.
+
+#### `Style.contrast`
+
+Signature: <code>contrast(styleHint: [[]Id](#id))</code>
+
+Create and return a style that contrasts with the current style.
 
 #### `Layer.create`
 
