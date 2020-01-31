@@ -93,6 +93,10 @@ function renderApp(style, depth=3)
 }
 ```
 
+## Documentation
+
+API below will be moved to seperate documentation soon.
+
 ## API
 
 ### Types
