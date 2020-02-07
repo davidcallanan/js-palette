@@ -1,6 +1,8 @@
 # Palette.js
 
-**Version**: 0.1.0
+**Version**: Alpha 0.1.0
+
+**This project has not yet reached a stable release! We will not be following semver until version 1.0.0**
 
 A simple JavaScript color palette management library.
 
