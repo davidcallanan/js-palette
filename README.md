@@ -24,14 +24,12 @@ Or manually build this package as detailed in `DEVELOPMENT.md`.
 Import this library:
 
 ```js
-import * as palette from 'palette';
+import * as palette from 'ui-palette';
 ```
 
 Define some colors and variants:
 
 ```js
-const palette = require("palette");
-
 const WHITE_VARIANTS = {
   "strong"  : "#fff",
   "default" : "#eee",

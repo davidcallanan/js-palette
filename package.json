@@ -1,6 +1,6 @@
 {
   "name": "ui-palette",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "build/index.js",
   "repository": "https://github.com/davidcallanan/js-palette",
   "author": "David P. Callanan",
