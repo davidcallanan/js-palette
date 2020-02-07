@@ -1,6 +1,6 @@
 // Temporary, until I add proper tests
 
-const palette = require("./build");
+const palette = require(".");
 
 const WHITE_VARIANTS = {
   "strong"  : "#fff",

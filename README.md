@@ -12,12 +12,12 @@ A simple JavaScript color palette management library.
 
 ## Installation
 
-**In the future**, you'll be able to install from the [npm registry](https://www.npmjs.com/):
+Install from the [npm registry](https://www.npmjs.com/):
 
  - via [npm](https://docs.npmjs.com/cli/npm) -  `npm i palette`
  - via [yarn](https://yarnpkg.com/) - `yarn add palette`
 
-For now, **manually build this package**.
+Or manually build this package as detailed in `DEVELOPMENT.md`.
 
 ## Usage
 
