@@ -1,5 +1,5 @@
 {
-  "name": "palette",
+  "name": "ui-palette",
   "version": "0.1.0",
   "main": "build/index.js",
   "repository": "https://github.com/davidcallanan/js-palette",
