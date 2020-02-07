@@ -1,6 +1,6 @@
 # Palette.js
 
-**Version**: 0.1.0-dev
+**Version**: 0.1.0
 
 A simple JavaScript color palette management library.
 
