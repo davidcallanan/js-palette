@@ -12,9 +12,8 @@ namespace Context
 		[styleId: string]: {
 			colors: Styles.Variants;
 			contentColors: Styles.Variants;
-			contrastingStyles: Id[];
-			// this could be a set for performance reasons, however I could not find a built-in sequenced set type in JavaScript
-			// will probably seperate into set and defaultContrastingStyle
+			defaultContrastingStyle: Id;
+			contrastingStyles: Set<Id>;
 		};
 	}
 
@@ -111,12 +110,13 @@ class InternalStyle extends Style
 	{
 		for (let styleId of styleHint || [])
 		{
-			if (this.stylesContext[styleId] && this.styleDef.contrastingStyles.includes(styleId))
+			if (this.stylesContext[styleId] && (
+				this.styleDef.contrastingStyles.has(styleId) || this.styleDef.defaultContrastingStyle == styleId
+			))
 				return new InternalStyle(this.stylesContext, styleId);
 		}
 
-		return new InternalStyle(this.stylesContext, this.styleDef.contrastingStyles[0]);
-		// will add in a defaultContrastingStyle, so guaranteed no out of bounds then
+		return new InternalStyle(this.stylesContext, this.styleDef.defaultContrastingStyle);
 	}
 	
 	variant(variantHint: Hint): Style
