@@ -14,8 +14,8 @@ A simple JavaScript color palette management library.
 
 Install from the [npm registry](https://www.npmjs.com/):
 
- - via [npm](https://docs.npmjs.com/cli/npm) -  `npm i palette`
- - via [yarn](https://yarnpkg.com/) - `yarn add palette`
+ - via [npm](https://docs.npmjs.com/cli/npm) -  `npm i ui-palette`
+ - via [yarn](https://yarnpkg.com/) - `yarn add ui-palette`
 
 Or manually build this package as detailed in `DEVELOPMENT.md`.
 
