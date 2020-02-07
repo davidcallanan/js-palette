@@ -1,4 +1,4 @@
-type Id = string | symbol;
+type Id = string /*| symbol*/;
 type Hint = Id | Id[];
 
 namespace Context
@@ -12,8 +12,8 @@ namespace Context
 		[styleId: string]: {
 			colors: Styles.Variants;
 			contentColors: Styles.Variants;
-			defaultContrastingStyle: Id;
 			contrastingStyles: Set<Id>;
+			defaultContrastingStyle: Id;
 		};
 	}
 
@@ -71,7 +71,9 @@ abstract class Style
  */
 function rootStyle(stylesContext: Context.Styles, rootStyleHint: Hint): Style
 {
-	for (let styleId of rootStyleHint)
+	var styleHints = typeof(rootStyleHint) === "string" ? [rootStyleHint] : rootStyleHint;
+	
+	for (let styleId of styleHints)
 		if (stylesContext[styleId])
 			return new InternalStyle(stylesContext, styleId);
 
@@ -81,10 +83,13 @@ function rootStyle(stylesContext: Context.Styles, rootStyleHint: Hint): Style
 class InternalStyle extends Style
 {
 	private stylesContext: Context.Styles;
+	private styleId: Id;
+	private variantId: Id;
 	private styleDef;
 
-	constructor(stylesContext: Context.Styles, styleId: string, variantId: string)
+	constructor(stylesContext: Context.Styles, styleId: string, variantId: string = "default")
 	{
+		super();
 		this.stylesContext = stylesContext;
 		this.styleId = styleId;
 		this.variantId = variantId;
@@ -98,7 +103,9 @@ class InternalStyle extends Style
 
 	contentColor(variantHint?: Hint): any
 	{
-		for (let variantId of variantHint) {
+		let variantHints = variantHint ? typeof(variantHint) === "string" ? [variantHint] : variantHint : [];
+
+		for (let variantId of variantHints) {
 			let color = this.styleDef.contentColors[variantId];
 			if (color) return color;
 		}
@@ -108,12 +115,16 @@ class InternalStyle extends Style
 	
 	contrast(styleHint?: Hint): Style
 	{
-		for (let styleId of styleHint || [])
+		var styleHints = styleHint ? typeof(styleHint) === "string" ? [styleHint] : styleHint : [];
+	
+		for (let styleId of styleHints)
 		{
 			if (this.stylesContext[styleId] && (
 				this.styleDef.contrastingStyles.has(styleId) || this.styleDef.defaultContrastingStyle == styleId
 			))
+			{
 				return new InternalStyle(this.stylesContext, styleId);
+			}
 		}
 
 		return new InternalStyle(this.stylesContext, this.styleDef.defaultContrastingStyle);
@@ -121,9 +132,14 @@ class InternalStyle extends Style
 	
 	variant(variantHint: Hint): Style
 	{
-		for (let variantId of variantHint) {
-			if(this.styleDef.colors[variantId])
+		var variantHints = typeof(variantHint) === "string" ? [variantHint] : variantHint;
+
+		for (let variantId of variantHints)
+		{
+			if(this.styleDef.colors[variantId] && variantId != this.variantId)
+			{
 				return new InternalStyle(this.stylesContext, this.styleId, variantId);
+			}
 		}
 
 		throw "[Palette] Could not find variant using `variantHint`"
@@ -147,3 +163,5 @@ export {
 	Hint,
 	Context
 };
+
+// TODO: improve variant matching

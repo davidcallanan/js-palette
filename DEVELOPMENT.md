@@ -15,3 +15,11 @@ See `README.md` file. Please test minimum versions before MR.
 ## Build
 
  - `yarn build` or `yarn build:watch`
+
+## Documentation
+
+ - `yarn doc`
+
+## Temp Testing
+
+ - `node test`
