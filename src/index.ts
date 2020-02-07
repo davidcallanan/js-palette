@@ -9,10 +9,12 @@ namespace Context
 
 	export interface Styles
 	{
-		[styleName: string]: {
+		[styleId: string]: {
 			colors: Styles.Variants;
 			contentColors: Styles.Variants;
 			contrastingStyles: Id[];
+			// this could be a set for performance reasons, however I could not find a built-in sequenced set type in JavaScript
+			// will probably seperate into set and defaultContrastingStyle
 		};
 	}
 
@@ -21,7 +23,7 @@ namespace Context
 		export interface Variants
 		{
 			default: any;
-			[variantName: string]: any;
+			[variantId: string]: any;
 		}
 	}
 }
@@ -50,6 +52,16 @@ abstract class Style
 	 * @param variantHint Specify a hint of which style should be returned.
 	 */
 	abstract variant(variantHint?: Hint): Style;
+
+	/**
+	 * Determine if this style comes from the given style name
+	 */
+	abstract isStyle(styleName: Id): boolean;
+
+	/**
+	 * Determine if this style comes from the given variant name
+	 */
+	abstract isVariant(variantName: Id): boolean;
 }
 
 /**
@@ -60,20 +72,71 @@ abstract class Style
  */
 function rootStyle(stylesContext: Context.Styles, rootStyleHint: Hint): Style
 {
-	return new InternalStyle();
+	for (let styleId of rootStyleHint)
+		if (stylesContext[styleId])
+			return new InternalStyle(stylesContext, styleId);
+
+	throw "[Palette] Could not find style using `rootStyleHint`"
 }
 
 class InternalStyle extends Style
 {
-	color(): any {}
-	contentColor(variantHint?: Hint): any {}
+	private stylesContext: Context.Styles;
+	private styleDef;
+
+	constructor(stylesContext: Context.Styles, styleId: string, variantId: string)
+	{
+		this.stylesContext = stylesContext;
+		this.styleId = styleId;
+		this.variantId = variantId;
+		this.styleDef = this.stylesContext[styleId];
+	}
+
+	color(): any
+	{
+		return this.styleDef.colors[this.variantId];
+	}
+
+	contentColor(variantHint?: Hint): any
+	{
+		for (let variantId of variantHint) {
+			let color = this.styleDef.contentColors[variantId];
+			if (color) return color;
+		}
+
+		return this.styleDef.contentColors.default;
+	}
+	
 	contrast(styleHint?: Hint): Style
 	{
-		return new InternalStyle();
+		for (let styleId of styleHint || [])
+		{
+			if (this.stylesContext[styleId] && this.styleDef.contrastingStyles.includes(styleId))
+				return new InternalStyle(this.stylesContext, styleId);
+		}
+
+		return new InternalStyle(this.stylesContext, this.styleDef.contrastingStyles[0]);
+		// will add in a defaultContrastingStyle, so guaranteed no out of bounds then
 	}
-	variant(variantHint?: Hint): Style
+	
+	variant(variantHint: Hint): Style
 	{
-		return new InternalStyle();
+		for (let variantId of variantHint) {
+			if(this.styleDef.colors[variantId])
+				return new InternalStyle(this.stylesContext, this.styleId, variantId);
+		}
+
+		throw "[Palette] Could not find variant using `variantHint`"
+	}
+
+	isStyle(styleId: Id): boolean
+	{
+		return this.styleId == styleId;
+	}
+
+	isVariant(variantId: Id): boolean
+	{
+		return this.variantId == variantId;
 	}
 }
 
