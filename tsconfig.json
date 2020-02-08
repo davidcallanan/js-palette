@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "lib": ["es2015"],
+    "sourceMap": true,
+    "outDir": "./build",
+    "rootDir": "./src",
+  },
+  "include": ["./src/**/*"],
+  "jsdocOptions": {
+    "mode": "modules",
+    "out": "docs",
+    "toc": [
+      "rootStyle",
+      "Style",
+      "Context"
+    ]
+  }
+}

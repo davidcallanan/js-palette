@@ -1,35 +1,7 @@
-# Palette.js
+// Temporary, until I add proper tests
 
-**Version**: Alpha 0.1.0
+const palette = require(".");
 
-**This project has not yet reached a stable release! We will not be following semver until version 1.0.0**
-
-A simple JavaScript color palette management library.
-
-## Dependencies
-
- - [Node](https://nodejs.org) `^10.16.3` - Note that other versions of node may still be compatible. Other environments may be compatible too.
-
-## Installation
-
-Install from the [npm registry](https://www.npmjs.com/):
-
- - via [npm](https://docs.npmjs.com/cli/npm) -  `npm i ui-palette`
- - via [yarn](https://yarnpkg.com/) - `yarn add ui-palette`
-
-Or manually build this package as detailed in `DEVELOPMENT.md`.
-
-## Usage
-
-Import this library:
-
-```js
-import * as palette from 'ui-palette';
-```
-
-Define some colors and variants:
-
-```js
 const WHITE_VARIANTS = {
   "strong"  : "#fff",
   "default" : "#eee",
@@ -48,12 +20,6 @@ const PURPLE_VARIANTS = {
   "weak"    : "#6E23B3",
 }
 
-// You may add additional color variants, for example for errors or warnings
-```
-
-Define some styles (you should have at least two for contrast):
-
-```js
 const generateStyles = (theme) => ({
   "primary": {
     colors        : PURPLE_VARIANTS,
@@ -68,22 +34,16 @@ const generateStyles = (theme) => ({
     defaultContrastingStyle: "primary",
   }
 })
-```
 
-Create root layer and start rendering!
-
-```js
-const theme = decideOnSomeTheme(["light", "dark"]);
+const theme = ["light", "dark"][0];
 const styles = generateStyles(theme);
 const style = palette.rootStyle(styles, "secondary");
 renderApp(style);
-```
 
-Dummy render function:
-
-```js
 function renderApp(style, depth=3)
 {
+	console.log(`\nRendering App (depth=${3-depth})`);
+
   // Use the color for the element you are rendering
   renderBackground(style.color());
 
@@ -101,16 +61,28 @@ function renderApp(style, depth=3)
   if (depth <= 0) return;
   renderApp(style.contrast(), depth - 1);
 }
-```
 
-## Documentation
+function renderBackground(color)
+{
+	console.log(`Background: ${color}`);
+}
 
-For now, generate the documentation manually by cloning this repo and following the steps in `DEVELOPMENT.md`.
+function renderHeading(color)
+{
+	console.log(`Heading: ${color}`);
+}
 
-## Development
+function renderDescription(color)
+{
+	console.log(`Description: ${color}`);
+}
 
-See `DEVELOPMENT.md` file.
+function renderCallToActionButton(color)
+{
+	console.log(`Strong Button: ${color}`);
+}
 
-## License
-
-See `LICENSE` file.
+function renderSecondaryButton(color)
+{
+	console.log(`Weak Button: ${color}`);
+}

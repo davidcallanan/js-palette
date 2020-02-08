@@ -1,0 +1,7 @@
+/node_modules/
+/src/
+/docs/
+/yarn.lock
+/yarn-debug.log
+/yarn-error.log
+/DEVELOPMENT.md
